@@ -1,0 +1,19 @@
+[Desktop Entry]
+DefaultProfile=Mine.profile
+
+[General]
+ConfigVersion=1
+
+[MainWindow]
+MenuBar=Disabled
+
+[SplitView]
+SplitViewVisibility=AlwaysHideSplitHeader
+
+[TabBar]
+CloseTabButton=None
+SearchTabsButton=HideSearchTabsButton
+TabBarPosition=Bottom
+
+[UiSettings]
+ColorScheme=

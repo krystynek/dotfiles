@@ -1,0 +1,84 @@
+#!/bin/bash
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Homebrew is not installed. Installing now."
+  # Homebrew installation script
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Define your formula (CLI) packages here
+FORMULA_PACKAGES=(
+  "atuin"
+  "chezmoi"
+  "eza"
+  "fd"
+  "fzf"
+  "lazygit"
+  "neovim"
+  "nvm"
+  "poetry"
+  "pyenv"
+  "ripgrep"
+  "sshs"
+  "starship"
+  "tmux"
+  "xsel"
+  "yazi"
+  "zoxide"
+  "zsh-autosuggestions"
+  "zsh-autocomplete"
+)
+
+# Define cask (GUI/app) packages here
+CASK_PACKAGES=(
+  "font-jetbrains-mono-nerd-font"
+)
+
+
+echo
+echo "Installing formulas..."
+for pkg in "${FORMULA_PACKAGES[@]}"; do
+    if ! brew list --formula | grep -qw "$pkg"; then
+        echo "Installing formula: $pkg..."
+        brew install "$pkg"
+    else
+      echo "Already installed (form): $pkg"
+    fi
+done
+echo "Done!"
+
+echo
+echo "Installing casks..."
+for cask in "${CASK_PACKAGES[@]}"; do
+    if ! brew list --cask | grep -qw "$cask"; then
+        echo "Installing cask: $cask..."
+        brew install --cask "$cask"
+    else
+      echo "Already installed (cask): $cask"
+    fi
+done
+echo "Done!"
+
+echo
+echo "Removing obsolete packages..."
+declare -A KEEP
+for pkg in "${FORMULA_PACKAGES[@]}" "${CASK_PACKAGES[@]}"; do
+  KEEP["$pkg"]=1
+done
+for name in $(brew list --formula --installed-on-request ); do
+  if [[ -z "${KEEP[$name]}" ]]; then
+    echo "Uninstalling $name (not in whitelist)"
+    brew uninstall "$name"
+  fi
+done
+echo "Done!"
+
+brew autoremove
+brew cleanup
+
+if [[ -d "$HOME/.tmux" ]]; then
+  echo "TMUX TPM exists. Skipping install"
+else
+  echo "Installing TMUX TPM"
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi

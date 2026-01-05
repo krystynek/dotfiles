@@ -1,0 +1,9 @@
+zshrc/.zcompdump
+.DS_Store
+node_modules
+hammerspoon/.hammerspoon/Spoons/VimMode.spoon
+**/.tmp**
+**/.m4b
+**/.aax
+**/.aac
+

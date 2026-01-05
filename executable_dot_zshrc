@@ -1,0 +1,34 @@
+# User configuration
+for file in ~/.config/zsh/*.zsh; do
+  [ -r "$file" ] && source "$file"
+done
+unset file
+
+# starship prompt
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval "$(starship init zsh)"
+
+# vi mode
+bindkey -v
+bindkey -M viins 'jk' vi-cmd-mode
+export KEYTIMEOUT=10
+bindkey -M viins -s '\e' '^U'
+
+unset zle_bracketed_paste
+
+autoload -Uz +X compinit && compinit
+
+## case insensitive path-completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' menu select
+
+eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"
+
+# Fix emacs style word jumping
+# bindkey '^[[1;5A' this is ctrl up
+# bindkey '^[[1;5B' this is ctrl down
+bindkey '^[[1;5C' emacs-forward-word
+bindkey '^[[1;5D' emacs-backward-word
+
+

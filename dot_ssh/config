@@ -1,0 +1,9 @@
+AddKeysToAgent yes
+
+Host "Github"
+  HostName github.com
+
+Host "Truenas"
+  HostName 192.168.10.111
+  User lubos
+
