@@ -23,7 +23,6 @@ FORMULA_PACKAGES=(
   "sshs"
   "starship"
   "tmux"
-  "xsel"
   "yazi"
   "zoxide"
   "zsh-autosuggestions"
@@ -36,27 +35,39 @@ CASK_PACKAGES=(
   "font-jetbrains-mono-nerd-font"
 )
 
+{{- if eq .chezmoi.os "linux" -}}
+# LINUX ONLY
+FORMULA_PACKAGES+=(
+  "xsel"
+)
+CASK_PACKAGES+=()
+{{ end -}}
+
 {{- if eq .chezmoi.os "darwin" -}}
-# Add OS-specific packages
+# MAC ONLY
   FORMULA_PACKAGES+=(
     "battery"
     "colima"
     "docker"
+    "docker-compose"
+    "docker-completion"
     "ical-buddy"
-    "mongo-compass"
     "mongosh"
+    "ruby"
+    "ruby@3.3"
     "wget"
+    "nebula-cli"
   )
   CASK_PACKAGES+=(
     "android-platform-tools"
-    "battery"
     "betterdisplay"
     "calibre"
     "ghostty"
     "karabiner-elements"
     "keepassxc"
+    "mongodb-compass"
     "kitty"
-    "pgadmin"
+    "pgadmin4"
     "zed"
   )
 {{ end -}}
@@ -88,12 +99,17 @@ echo "Done!"
 
 echo
 echo "Removing obsolete packages..."
-declare -A KEEP
-for pkg in "${FORMULA_PACKAGES[@]}" "${CASK_PACKAGES[@]}"; do
-  KEEP["$pkg"]=1
-done
+should_keep() {
+  local pkg="$1"
+  for keep_pkg in "${FORMULA_PACKAGES[@]}" "${CASK_PACKAGES[@]}"; do
+    if [ "$keep_pkg" = "$pkg" ]; then
+      return 0
+    fi
+  done
+  return 1
+}
 for name in $(brew list --formula --installed-on-request ); do
-  if [[ -z "${KEEP[$name]}" ]]; then
+  if ! should_keep "$name"; then
     echo "Uninstalling $name (not in whitelist)"
     brew uninstall "$name"
   fi
