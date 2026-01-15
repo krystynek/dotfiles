@@ -1,4 +1,5 @@
 scripts/
 .config/nvim/lazy-lock.json
 .config/zsh/ignore.zsh
+**/node_modules/
 **/credentials

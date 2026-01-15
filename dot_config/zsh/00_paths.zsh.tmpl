@@ -5,12 +5,15 @@
 PATH="$HOME/bin:/usr/local/bin:$PATH"
 PATH="$PATH:$HOME/.local/bin"
 PATH="/opt/homebrew/bin:$PATH"
+PATH=/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.3.0/bin:$PATH
 export PATH
 
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 
-{{/* ------------- MAC LINUX --------------------- */}}
+export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
+
+{{/* ------------- LINUX PATHS ------------------- */}}
 {{ else if eq .chezmoi.os "linux" }}
 PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"
 PATH="$PATH:$HOME/bin:/usr/local/bin"
