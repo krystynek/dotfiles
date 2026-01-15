@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+     /* List of folders to include type definitions from. */
+     "noEmit": true,
+    "target": "esnext",
+     "module": "nodenext",
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "types": [
+        "node"
+    ]
+ }
+}
